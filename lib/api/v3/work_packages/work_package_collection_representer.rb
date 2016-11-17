@@ -144,6 +144,23 @@ module API
 
         def full_work_packages(ids_in_order)
           wps = add_eager_loading(WorkPackage.where(id: ids_in_order), current_user).to_a
+
+          user_cvs = []
+
+          wps.each do |wp|
+            wp.custom_values.each do |cv|
+              user_cvs << cv if cv.custom_field.field_format == 'user' && cv.value.present?
+            end
+          end
+
+          all_user_ids = user_cvs.map(&:value)
+
+          users_per_id = User.includes(:preference).find(all_user_ids).to_a.group_by(&:id)
+
+          user_cvs.each do |cv|
+            cv.value = users_per_id[cv.value.to_i].first
+          end
+
           wps.sort_by { |wp| ids_in_order.index(wp.id) }
         end
 

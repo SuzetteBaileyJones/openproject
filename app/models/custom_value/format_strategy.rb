@@ -50,9 +50,19 @@ class CustomValue::FormatStrategy
     value
   end
 
+  def parse_values(val)
+    self.memoized_typed_value = nil
+
+    val
+  end
+
   # Validates the type of the custom field and returns a symbol indicating the validation error
   # if an error occurred; returns nil if no error occurred
   def validate_type_of_value
     raise 'SubclassResponsibility'
   end
+
+  private
+
+  attr_accessor :memoized_typed_value
 end

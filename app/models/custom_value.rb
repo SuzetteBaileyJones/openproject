@@ -80,6 +80,12 @@ class CustomValue < ActiveRecord::Base
     value.to_s
   end
 
+  def value=(val)
+    parsed_value = strategy.parse_values(val)
+
+    super(parsed_value)
+  end
+
   protected
 
   def to_db_value
