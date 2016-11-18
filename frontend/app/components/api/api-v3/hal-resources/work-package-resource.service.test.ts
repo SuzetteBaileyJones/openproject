@@ -264,7 +264,7 @@ describe('WorkPackageResource service', () => {
             href: 'activities'
           }
         },
-        isNew: false
+        isNew: true
       };
       createWorkPackage();
     });
